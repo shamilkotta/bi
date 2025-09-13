@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
+import { Command, Option } from "commander";
+import setupShell from "../setup";
+import { checkSetup } from "../utils/verifyConfig";
 
 class BiCommand extends Command {
   createCommand(name: string) {
     const command = new Command(name);
 
-    command.hook("preAction", (event) => {
-      const commandName = event.name();
-      console.log({ commandName });
-    });
+    command.hook("preAction", checkSetup);
 
     return command;
   }
@@ -21,6 +20,17 @@ program
   .name("bi")
   .description("A light intelligence in your bash")
   .version("0.1.0", "-v, --version", "Show the installed bi version");
+
+program
+  .command("setup")
+  .description("Configure shell integration for bi")
+  .addOption(
+    new Option(
+      "-s, --shell <shell>",
+      "Shell to configure (default: auto)"
+    ).choices(["bash", "zsh"])
+  )
+  .action(setupShell);
 
 program
   .command("help", { isDefault: true })
