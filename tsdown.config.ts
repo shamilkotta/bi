@@ -4,6 +4,8 @@ export default defineConfig([
   {
     entry: ["src/**/*.{js,ts}", "!src/**/*.d.{ts}"],
     platform: "neutral",
-    dts: true
+    dts: false,
+    minify: false,
+    format: ["esm"]
   }
 ]);
