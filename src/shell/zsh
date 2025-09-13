@@ -1,0 +1,31 @@
+BI_LOG_DIR="$HOME/.bi/logs"
+mkdir -p "$BI_LOG_DIR"
+BI_CURR_OUT="$BI_LOG_DIR/current"
+
+exec > >(tee -a "$BI_CURR_OUT") 2>&1
+
+preexec() {
+  BI_LAST_CMD="$1"
+  : > "$BI_CURR_OUT"
+}
+
+precmd() {
+  local exit_code=$?
+  local timestamp=$(date +'%Y-%m-%dT%H:%M:%S%z')
+
+  if [[ "$BI_LAST_CMD" == "clear" ]]; then
+    return
+  fi
+
+  local output=$(jq -Rs . < "$BI_CURR_OUT")
+
+  jq -n \
+    --arg time "$timestamp" \
+    --arg cmd "$BI_LAST_CMD" \
+    --argjson code "$exit_code" \
+    --arg out "$output" \
+    '{timestamp: $time, command: $cmd, exit_code: $code, output: $out}' \
+    >> "$BI_LOG_DIR/history"
+}
+
+export BI_SETUP=1
