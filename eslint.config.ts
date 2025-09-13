@@ -39,5 +39,10 @@ export default defineConfig([
     language: "css/css",
     extends: ["css/recommended"]
   },
-  eslintConfigPrettier
+  eslintConfigPrettier,
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn"
+    }
+  }
 ]);
