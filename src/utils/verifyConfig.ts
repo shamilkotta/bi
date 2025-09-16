@@ -1,15 +1,15 @@
 import process from "process";
-import { COLORS, SYMBOLS } from "./consts";
+import { COLORS } from "./consts";
+import { errorAndExit } from "./console";
 
 export function checkSetup() {
   if (
     (!process.env.BI_SETUP || process.env.BI_SETUP != "1") &&
     process.argv[2] !== "setup"
   ) {
-    console.error(
-      `${COLORS.red}${SYMBOLS.warning} bi not initialized.${COLORS.reset}\n` +
-        `${COLORS.yellow}Run ${COLORS.bold}\`bi setup\`${COLORS.reset}${COLORS.yellow} and restart your shell.${COLORS.reset}`
+    errorAndExit(
+      "bi not initialized.",
+      `Run ${COLORS.bold}\`bi setup\`${COLORS.reset}${COLORS.yellow} and restart your shell.`
     );
-    process.exit(1);
   }
 }

@@ -6,7 +6,9 @@ export const COLORS = {
   blue: "\x1b[34m",
   magenta: "\x1b[35m",
   bold: "\x1b[1m",
-  red: "\x1b[31m"
+  red: "\x1b[31m",
+  base: "\x1b[90m",
+  highlight: "\x1b[37m"
 };
 
 export const SYMBOLS = {

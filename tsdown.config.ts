@@ -9,7 +9,8 @@ export default defineConfig([
     },
     platform: "node",
     dts: false,
-    minify: false,
+    minify: true,
+    clean: true,
     format: ["esm"]
   }
 ]);
