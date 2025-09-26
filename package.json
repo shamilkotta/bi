@@ -1,7 +1,7 @@
 {
-  "name": "bi",
+  "name": "bash-i",
   "version": "0.0.0",
-  "description": "A starter for creating a TypeScript package.",
+  "description": "A light intelligence in your bash",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/shamilkotta/bi#readme",
@@ -16,12 +16,13 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "bin": {
     "bi": "./dist/bin/bi.js"
   },
-  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -54,6 +55,7 @@
     "vitest": "^3.1.3"
   },
   "dependencies": {
+    "ai": "^5.0.44",
     "commander": "^14.0.0"
   },
   "packageManager": "pnpm@9.15.2"

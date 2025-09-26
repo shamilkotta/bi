@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
+import { Command, Option } from "commander";
+import setupShell from "../setup";
+import { checkSetup } from "../utils/verifyConfig";
+import biHelp from "../help";
+import log from "../log";
 
 class BiCommand extends Command {
   createCommand(name: string) {
     const command = new Command(name);
 
-    command.hook("preAction", (event) => {
-      const commandName = event.name();
-      console.log({ commandName });
-    });
+    command.hook("preAction", checkSetup);
 
     return command;
   }
@@ -23,33 +24,44 @@ program
   .version("0.1.0", "-v, --version", "Show the installed bi version");
 
 program
+  .command("setup")
+  .description("Configure shell integration for bi")
+  .addOption(
+    new Option(
+      "-s, --shell <shell>",
+      "Shell to configure (default: auto)"
+    ).choices(["bash", "zsh"])
+  )
+  .option("-m, --model <model>", "Model to use for the response")
+  .option("--apiKey <apiKey>", "Vercel AI Gateway API key")
+  .action(setupShell);
+
+program
   .command("help", { isDefault: true })
   .description("Generate BI response")
-  .option("-m, --message <message>", "Additional context or message to include")
-  .action((_, options) => {
-    const { message } = options.opts();
-    console.log("Generating bi response", message);
-    // program.help();
-  });
+  .option("-p, --prompt <prompt>", "Additional context or prompt to include")
+  .option("-m, --model <model>", "Model to use for the response")
+  .option("-s, --skip", "Skip the context")
+  .action(biHelp);
+
+program
+  .command("log")
+  .description("Show the log of the current session")
+  .action(log);
 
 program
   .command("checkpoint")
   .alias("cp")
   .description("Start a fresh context. Previous context is cleared.")
-  .option("-n, --name <name>", "Optional name for the checkpoint")
-  .action((_, options) => {
-    const { name } = options.opts();
-    console.log("Creating checkpoint", name);
-  });
+  .action(() => {});
 
 program
   .command("clear")
   .alias("clr")
   .description(
-    "Clear the terminal display without resetting the current context \n(Unlike the standard 'clear', which resets both screen and context)"
+    "Clear the terminal display and reset the current context \n(Unlike the standard 'clear', which resets only the screen)"
   )
   .action(() => {
-    console.log("Clearing the terminal");
     process.stdout.write("\x1Bc");
   });
 
