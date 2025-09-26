@@ -4,6 +4,7 @@ import { Command, Option } from "commander";
 import setupShell from "../setup";
 import { checkSetup } from "../utils/verifyConfig";
 import biHelp from "../help";
+import log from "../log";
 
 class BiCommand extends Command {
   createCommand(name: string) {
@@ -44,6 +45,11 @@ program
   .action(biHelp);
 
 program
+  .command("log")
+  .description("Show the log of the current session")
+  .action(log);
+
+program
   .command("checkpoint")
   .alias("cp")
   .description("Start a fresh context. Previous context is cleared.")
@@ -53,7 +59,7 @@ program
   .command("clear")
   .alias("clr")
   .description(
-    "Clear the terminal display without resetting the current context \n(Unlike the standard 'clear', which resets both screen and context)"
+    "Clear the terminal display and reset the current context \n(Unlike the standard 'clear', which resets only the screen)"
   )
   .action(() => {
     process.stdout.write("\x1Bc");
