@@ -8,7 +8,8 @@ export const COLORS = {
   bold: "\x1b[1m",
   red: "\x1b[31m",
   base: "\x1b[90m",
-  highlight: "\x1b[37m"
+  highlight: "\x1b[37m",
+  italic: "\x1b[3m"
 };
 
 export const SYMBOLS = {

@@ -4,20 +4,43 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { COLORS, SYMBOLS } from "./utils/consts";
 import { errorAndExit, info, log, success, warn } from "./utils/console";
+import readline from "readline/promises";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default function setupShell(_: any, options: any) {
-  const { shell, apiKey, model } = options.opts();
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+export default async function setupShell(_: any, options: any) {
+  let { apiKey, model } = options.opts();
+  const { shell } = options.opts();
   const home = os.homedir();
 
   if (!apiKey) {
+    const answer = await rl.question(
+      `${COLORS.bold}Enter your API key:${COLORS.reset} `
+    );
+
+    if (!answer.trim()) {
     errorAndExit("No API key provided.");
+    }
+    apiKey = answer.trim();
   }
 
   if (!model) {
+    const answer = await rl.question(
+      `${COLORS.bold}Enter model name${COLORS.reset} ` +
+        `${COLORS.base}${COLORS.italic}(https://vercel.com/ai-gateway/models)${COLORS.reset}` +
+        `${COLORS.bold}:${COLORS.reset} `
+    );
+
+    if (!answer.trim()) {
     errorAndExit("No model provided.");
+  }
+    model = answer.trim();
   }
 
   const config = path.join(home, ".bi/config.json");
@@ -57,4 +80,5 @@ export default function setupShell(_: any, options: any) {
   log(
     `${COLORS.magenta}\n${SYMBOLS.star} Setup completed! ${SYMBOLS.star}${COLORS.reset}\n`
   );
+  process.exit(0);
 }
