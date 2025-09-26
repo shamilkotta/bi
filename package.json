@@ -1,7 +1,7 @@
 {
-  "name": "bi",
+  "name": "bash-i",
   "version": "0.0.0",
-  "description": "A starter for creating a TypeScript package.",
+  "description": "A light intelligence in your bash",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/shamilkotta/bi#readme",
