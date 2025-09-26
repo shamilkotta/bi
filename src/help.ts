@@ -22,7 +22,10 @@ export default function biHelp(_: any, options: any) {
   let history = [];
 
   if (!skip) {
-    const historyFile = path.join(home, ".bi/logs/history");
+    const historyFile = path.join(
+      home,
+      `.bi/logs/history_${process.env.BI_SESSION_ID}`
+    );
     const rawHistory = fs.readFileSync(historyFile, "utf8");
 
     history = rawHistory
@@ -40,5 +43,7 @@ export default function biHelp(_: any, options: any) {
     onStart: () => {
       animatedText.stop();
     }
+  }).then(() => {
+    process.exit(0);
   });
 }
