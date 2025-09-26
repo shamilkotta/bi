@@ -1,5 +1,3 @@
-
-
 __bi_init() {
   [[ -n "$BI_INIT" ]] && return
 
@@ -27,7 +25,7 @@ precmd() {
   local exit_code=$?
   local timestamp=$(date +'%Y-%m-%dT%H:%M:%S%z')
 
-  if [[ -z "$BI_LAST_CMD" || "$BI_LAST_CMD" == "clear" ]]; then
+  if [[ -z "$BI_LAST_CMD" || "$BI_LAST_CMD" == "clear" || "$BI_ACTIVE" -eq 0 ]]; then
     return
   fi
 

@@ -25,7 +25,7 @@ export default async function setupShell(_: any, options: any) {
     );
 
     if (!answer.trim()) {
-    errorAndExit("No API key provided.");
+      errorAndExit("No API key provided.");
     }
     apiKey = answer.trim();
   }
@@ -38,8 +38,8 @@ export default async function setupShell(_: any, options: any) {
     );
 
     if (!answer.trim()) {
-    errorAndExit("No model provided.");
-  }
+      errorAndExit("No model provided.");
+    }
     model = answer.trim();
   }
 
@@ -49,12 +49,16 @@ export default async function setupShell(_: any, options: any) {
   const defaultShell =
     shell || process.env.SHELL?.includes("zsh") ? "zsh" : "bash";
 
+  if (defaultShell !== "zsh") {
+    errorAndExit("Only zsh is supported at the moment.");
+  }
+
   const rcFile =
     defaultShell === "zsh"
       ? path.join(home, ".zshrc")
       : path.join(home, ".bashrc");
 
-  let source = path.join(__dirname, `./shell/${defaultShell}`);
+  let source = path.join(__dirname, `./shell/${defaultShell}.sh`);
   source = source.replace(home, "$HOME");
 
   const markerStart = "# >>> BI >>>";
