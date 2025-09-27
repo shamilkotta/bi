@@ -1,11 +1,12 @@
+
+ZI_ACTIVE=1
+
 __zi_init() {
-  [[ -n "$ZI_INIT" ]] && return
+  [[ -n "$ZI_INIT" || "$ZI_ACTIVE" -eq 0 ]] && return
 
   ZI_LOG_DIR="$HOME/.zi/logs"
   mkdir -p "$ZI_LOG_DIR"
 
-  ZI_INIT=1
-  ZI_ACTIVE=1
 
   export ZI_SESSION_ID="$(date +%s)-$$"
   ZI_SESSION_FILE="$ZI_LOG_DIR/history_$ZI_SESSION_ID"
@@ -14,6 +15,7 @@ __zi_init() {
 
   exec > >(tee -a "$ZI_CURR_OUT") 2>&1
 
+  ZI_INIT=1
 }
 
 __zi_strip_ansi() {
@@ -21,6 +23,8 @@ __zi_strip_ansi() {
 }
 
 preexec() {
+  __zi_init
+
   ZI_LAST_CMD="$1"
   : > "$ZI_CURR_OUT"
 }
@@ -91,6 +95,3 @@ zi() {
     command zi "$@"
   fi
 }
-
-autoload -Uz add-zsh-hook 
-add-zsh-hook precmd __zi_init
