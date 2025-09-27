@@ -25,7 +25,7 @@ precmd() {
   local exit_code=$?
   local timestamp=$(date +'%Y-%m-%dT%H:%M:%S%z')
 
-  if [[ -z "$ZI_LAST_CMD" || "$ZI_LAST_CMD" == "clear" || "$ZI_ACTIVE" -eq 0 ]]; then
+  if [[ -z "$ZI_LAST_CMD" || "$ZI_LAST_CMD" == "clear" || "$ZI_ACTIVE" -eq 0 || "$ZI_LAST_CMD" == zi* ]]; then
     return
   fi
 

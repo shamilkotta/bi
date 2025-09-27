@@ -65,7 +65,7 @@ export const generateAiResponse = async ({
         }
       }
     });
-    await res.text;
+    return res.text;
   } catch (error) {
     onStart?.();
     console.error("AI streaming error:", error);
