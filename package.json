@@ -1,6 +1,6 @@
 {
   "name": "zshi",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "A light intelligence in your zsh",
   "type": "module",
   "license": "MIT",
