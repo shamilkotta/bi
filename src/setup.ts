@@ -43,6 +43,9 @@ export default async function setupShell(_: any, options: any) {
     model = answer.trim();
   }
 
+  const configDir = path.join(home, ".zi");
+  fs.mkdirSync(configDir, { recursive: true });
+
   const config = path.join(home, ".zi/config.json");
   fs.writeFileSync(config, JSON.stringify({ apiKey, model }, null, 2));
 
