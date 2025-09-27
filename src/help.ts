@@ -47,7 +47,8 @@ export default async function ziHelp(_: any, options: any) {
     history: history,
     onStart: () => {
       animatedText.stop();
-    }
+    },
+    sessionId: process.env.ZI_SESSION_ID || `${Date.now()}`
   });
 
   if (response) {
