@@ -25,7 +25,13 @@ export default async function ziHelp(_: any, options: any) {
     `.zi/logs/history_${process.env.ZI_SESSION_ID}`
   );
   if (!skip) {
-    const rawHistory = fs.readFileSync(historyFile, "utf8");
+    let rawHistory;
+
+    if (!fs.existsSync(historyFile)) {
+      rawHistory = "";
+    } else {
+      rawHistory = fs.readFileSync(historyFile, "utf8");
+    }
 
     history = rawHistory
       .trim()
