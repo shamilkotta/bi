@@ -1,16 +1,16 @@
 {
-  "name": "bash-i",
-  "version": "0.0.0",
-  "description": "A light intelligence in your bash",
+  "name": "zshi",
+  "version": "0.1.1",
+  "description": "A light intelligence in your zsh",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://github.com/shamilkotta/bi#readme",
+  "homepage": "https://github.com/shamilkotta/zshi#readme",
   "bugs": {
-    "url": "https://github.com/shamilkotta/bi/issues"
+    "url": "https://github.com/shamilkotta/zshi/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shamilkotta/bi.git"
+    "url": "git+https://github.com/shamilkotta/zshi.git"
   },
   "author": "Shamil",
   "files": [
@@ -20,7 +20,7 @@
     "node": ">=20.0.0"
   },
   "bin": {
-    "bi": "./dist/bin/bi.js"
+    "zi": "./dist/bin/zi.js"
   },
   "exports": {
     "./package.json": "./package.json"

@@ -25,7 +25,7 @@ export default async function setupShell(_: any, options: any) {
     );
 
     if (!answer.trim()) {
-    errorAndExit("No API key provided.");
+      errorAndExit("No API key provided.");
     }
     apiKey = answer.trim();
   }
@@ -38,27 +38,34 @@ export default async function setupShell(_: any, options: any) {
     );
 
     if (!answer.trim()) {
-    errorAndExit("No model provided.");
-  }
+      errorAndExit("No model provided.");
+    }
     model = answer.trim();
   }
 
-  const config = path.join(home, ".bi/config.json");
+  const configDir = path.join(home, ".zi");
+  fs.mkdirSync(configDir, { recursive: true });
+
+  const config = path.join(home, ".zi/config.json");
   fs.writeFileSync(config, JSON.stringify({ apiKey, model }, null, 2));
 
   const defaultShell =
     shell || process.env.SHELL?.includes("zsh") ? "zsh" : "bash";
+
+  if (defaultShell !== "zsh") {
+    errorAndExit("Only zsh is supported at the moment.");
+  }
 
   const rcFile =
     defaultShell === "zsh"
       ? path.join(home, ".zshrc")
       : path.join(home, ".bashrc");
 
-  let source = path.join(__dirname, `./shell/${defaultShell}`);
+  let source = path.join(__dirname, `./shell/${defaultShell}.sh`);
   source = source.replace(home, "$HOME");
 
-  const markerStart = "# >>> BI >>>";
-  const markerEnd = "# <<< BI <<<";
+  const markerStart = "# >>> ZI >>>";
+  const markerEnd = "# <<< ZI <<<";
   const sourceLine = `[ -f "${source}" ] && source "${source}"`;
 
   const rcContent = fs.existsSync(rcFile)
@@ -74,7 +81,7 @@ export default async function setupShell(_: any, options: any) {
       `Please restart your terminal or run \`${COLORS.bold}source ${rcFile}\` to apply changes.`
     );
   } else {
-    info(`BI is already configured in ${COLORS.bold}${rcFile}`);
+    info(`zi is already configured in ${COLORS.bold}${rcFile}`);
   }
 
   log(

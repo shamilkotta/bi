@@ -67,6 +67,7 @@ export const generateAiResponse = async ({
     });
     await res.text;
   } catch (error) {
+    onStart?.();
     console.error("AI streaming error:", error);
     errorAndExit("Internal server error");
   }

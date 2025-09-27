@@ -7,7 +7,7 @@ import { generateAiResponse } from "./lib/ai";
 import { COLORS } from "./utils/consts";
 import { log } from "./utils/console";
 
-export default function biHelp(_: any, options: any) {
+export default function ziHelp(_: any, options: any) {
   const { prompt, model, skip } = options.opts();
   const home = os.homedir();
   const config = getConfig();
@@ -24,7 +24,7 @@ export default function biHelp(_: any, options: any) {
   if (!skip) {
     const historyFile = path.join(
       home,
-      `.bi/logs/history_${process.env.BI_SESSION_ID}`
+      `.zi/logs/history_${process.env.ZI_SESSION_ID}`
     );
     const rawHistory = fs.readFileSync(historyFile, "utf8");
 

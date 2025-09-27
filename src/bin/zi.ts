@@ -3,10 +3,10 @@
 import { Command, Option } from "commander";
 import setupShell from "../setup";
 import { checkSetup } from "../utils/verifyConfig";
-import biHelp from "../help";
+import ziHelp from "../help";
 import log from "../log";
 
-class BiCommand extends Command {
+class ZiCommand extends Command {
   createCommand(name: string) {
     const command = new Command(name);
 
@@ -16,16 +16,16 @@ class BiCommand extends Command {
   }
 }
 
-const program = new BiCommand();
+const program = new ZiCommand();
 
 program
-  .name("bi")
-  .description("A light intelligence in your bash")
-  .version("0.1.0", "-v, --version", "Show the installed bi version");
+  .name("zi")
+  .description("A light intelligence in your zsh")
+  .version("0.1.0", "-v, --version", "Show the installed zi version");
 
 program
   .command("setup")
-  .description("Configure shell integration for bi")
+  .description("Configure shell integration for zi")
   .addOption(
     new Option(
       "-s, --shell <shell>",
@@ -38,11 +38,11 @@ program
 
 program
   .command("help", { isDefault: true })
-  .description("Generate BI response")
+  .description("Generate zi response")
   .option("-p, --prompt <prompt>", "Additional context or prompt to include")
   .option("-m, --model <model>", "Model to use for the response")
   .option("-s, --skip", "Skip the context")
-  .action(biHelp);
+  .action(ziHelp);
 
 program
   .command("log")
@@ -61,8 +61,16 @@ program
   .description(
     "Clear the terminal display and reset the current context \n(Unlike the standard 'clear', which resets only the screen)"
   )
-  .action(() => {
-    process.stdout.write("\x1Bc");
-  });
+  .action(() => {});
+
+program
+  .command("stop")
+  .description("Stop logging the current session")
+  .action(() => {});
+
+program
+  .command("start")
+  .description("Start logging the current session")
+  .action(() => {});
 
 program.parse(process.argv);

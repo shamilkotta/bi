@@ -5,14 +5,14 @@ import { errorAndExit, log as consoleLog } from "./utils/console";
 import { COLORS } from "./utils/consts";
 
 export default function log() {
-  const sessionId = process.env.BI_SESSION_ID;
+  const sessionId = process.env.ZI_SESSION_ID;
   const home = os.homedir();
 
   if (!sessionId) {
     errorAndExit("No session found.");
   }
 
-  const historyFile = path.join(home, `.bi/logs/history_${sessionId}`);
+  const historyFile = path.join(home, `.zi/logs/history_${sessionId}`);
 
   const rawHistory = fs.readFileSync(historyFile, "utf8");
 
