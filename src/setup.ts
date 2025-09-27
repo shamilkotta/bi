@@ -43,7 +43,7 @@ export default async function setupShell(_: any, options: any) {
     model = answer.trim();
   }
 
-  const config = path.join(home, ".bi/config.json");
+  const config = path.join(home, ".zi/config.json");
   fs.writeFileSync(config, JSON.stringify({ apiKey, model }, null, 2));
 
   const defaultShell =
@@ -61,8 +61,8 @@ export default async function setupShell(_: any, options: any) {
   let source = path.join(__dirname, `./shell/${defaultShell}.sh`);
   source = source.replace(home, "$HOME");
 
-  const markerStart = "# >>> BI >>>";
-  const markerEnd = "# <<< BI <<<";
+  const markerStart = "# >>> ZI >>>";
+  const markerEnd = "# <<< ZI <<<";
   const sourceLine = `[ -f "${source}" ] && source "${source}"`;
 
   const rcContent = fs.existsSync(rcFile)
@@ -78,7 +78,7 @@ export default async function setupShell(_: any, options: any) {
       `Please restart your terminal or run \`${COLORS.bold}source ${rcFile}\` to apply changes.`
     );
   } else {
-    info(`BI is already configured in ${COLORS.bold}${rcFile}`);
+    info(`zi is already configured in ${COLORS.bold}${rcFile}`);
   }
 
   log(

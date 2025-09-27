@@ -6,12 +6,12 @@ import { errorAndExit } from "./console";
 
 export const getConfig = () => {
   const home = os.homedir();
-  const configFile = path.join(home, ".bi/config.json");
+  const configFile = path.join(home, ".zi/config.json");
 
   if (!fs.existsSync(configFile)) {
     errorAndExit(
       `Configuration file not found` +
-        `Run ${COLORS.bold}\`bi setup\`${COLORS.reset}${COLORS.yellow} and restart your shell`
+        `Run ${COLORS.bold}\`zi setup\`${COLORS.reset}${COLORS.yellow} and restart your shell`
     );
   }
 
