@@ -16,6 +16,10 @@ __zi_init() {
 
 }
 
+__zi_strip_ansi() {
+  perl -pe 's/\e(?:\[[0-9;]*[A-Za-z]|\][^\e]*\e\\|[PX^_].*?\e\\)//g'
+}
+
 preexec() {
   ZI_LAST_CMD="$1"
   : > "$ZI_CURR_OUT"
@@ -29,7 +33,7 @@ precmd() {
     return
   fi
 
-  local output=$(jq -Rs . < "$ZI_CURR_OUT")
+  local output=$(__zi_strip_ansi < "$ZI_CURR_OUT" | jq -Rs .)
 
   if [[ "$exit_code" -eq 0 ]]; then
     output=""
