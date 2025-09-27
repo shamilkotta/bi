@@ -2,6 +2,7 @@ import { createGateway, streamText } from "ai";
 import { systemPrompt } from "../utils/system";
 import { errorAndExit, error } from "../utils/console";
 import writeError from "../utils/writeError";
+import { COLORS } from "../utils/consts";
 
 type AiResponseProps = {
   prompt: string;
@@ -57,7 +58,10 @@ export const generateAiResponse = async ({
         console.log("\n");
         error("Something went wrong. Please try again.");
         const errorLogFile = writeError(err, sessionId);
-        errorAndExit(`Complete error log: ${errorLogFile}`);
+        console.log(
+          `${COLORS.base}Complete error log: ${errorLogFile}${COLORS.reset}`
+        );
+        process.exit(0);
       },
       onChunk: ({ chunk }) => {
         if (chunk.type === "text-delta") {
@@ -74,6 +78,9 @@ export const generateAiResponse = async ({
     onStart?.();
     error("Something went wrong. Please try again.");
     const errorLogFile = writeError(err, sessionId);
-    errorAndExit(`Complete error log: ${errorLogFile}`);
+    console.log(
+      `${COLORS.base}Complete error log: ${errorLogFile}${COLORS.reset}`
+    );
+    process.exit(0);
   }
 };

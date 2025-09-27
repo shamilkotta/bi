@@ -15,7 +15,7 @@ export default function log() {
   const historyFile = path.join(home, `.zi/logs/history_${sessionId}`);
 
   if (!fs.existsSync(historyFile)) {
-    console.log(`${COLORS.yellow}"No logs found."${COLORS.reset}`);
+    console.log(`${COLORS.yellow}No logs found.${COLORS.reset}`);
     process.exit(0);
   }
 
