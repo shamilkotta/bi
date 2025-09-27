@@ -5,6 +5,7 @@ import setupShell from "../setup";
 import { checkSetup } from "../utils/verifyConfig";
 import ziHelp from "../help";
 import log from "../log";
+import { version } from "../../package.json";
 
 class ZiCommand extends Command {
   createCommand(name: string) {
@@ -21,7 +22,7 @@ const program = new ZiCommand();
 program
   .name("zi")
   .description("A light intelligence in your zsh")
-  .version("0.1.0", "-v, --version", "Show the installed zi version");
+  .version(version, "-v, --version", "Show the installed zi version");
 
 program
   .command("setup")

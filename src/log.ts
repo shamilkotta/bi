@@ -14,6 +14,11 @@ export default function log() {
 
   const historyFile = path.join(home, `.zi/logs/history_${sessionId}`);
 
+  if (!fs.existsSync(historyFile)) {
+    console.log(`${COLORS.yellow}No logs found.${COLORS.reset}`);
+    process.exit(0);
+  }
+
   const rawHistory = fs.readFileSync(historyFile, "utf8");
 
   const history = rawHistory
@@ -22,9 +27,11 @@ export default function log() {
     .filter(Boolean)
     .map((line) => JSON.parse(line));
 
-  console.log(history.slice(-5));
   if (history.length > 5)
-    consoleLog(`${COLORS.blue} +${history.length - 5} more...${COLORS.reset}`);
+    consoleLog(
+      `${COLORS.blue}...${history.length - 5} commands${COLORS.reset}`
+    );
+  console.log(history.slice(-5));
 
   process.exit(0);
 }

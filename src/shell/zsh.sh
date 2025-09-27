@@ -1,11 +1,12 @@
+
+ZI_ACTIVE=1
+
 __zi_init() {
-  [[ -n "$ZI_INIT" ]] && return
+  [[ -n "$ZI_INIT" || "$ZI_ACTIVE" -eq 0 ]] && return
 
   ZI_LOG_DIR="$HOME/.zi/logs"
   mkdir -p "$ZI_LOG_DIR"
 
-  ZI_INIT=1
-  ZI_ACTIVE=1
 
   export ZI_SESSION_ID="$(date +%s)-$$"
   ZI_SESSION_FILE="$ZI_LOG_DIR/history_$ZI_SESSION_ID"
@@ -14,9 +15,16 @@ __zi_init() {
 
   exec > >(tee -a "$ZI_CURR_OUT") 2>&1
 
+  ZI_INIT=1
+}
+
+__zi_strip_ansi() {
+  perl -pe 's/\e(?:\[[0-9;]*[A-Za-z]|\][^\e]*\e\\|[PX^_].*?\e\\)//g'
 }
 
 preexec() {
+  __zi_init
+
   ZI_LAST_CMD="$1"
   : > "$ZI_CURR_OUT"
 }
@@ -25,11 +33,11 @@ precmd() {
   local exit_code=$?
   local timestamp=$(date +'%Y-%m-%dT%H:%M:%S%z')
 
-  if [[ -z "$ZI_LAST_CMD" || "$ZI_LAST_CMD" == "clear" || "$ZI_ACTIVE" -eq 0 ]]; then
+  if [[ -z "$ZI_LAST_CMD" || "$ZI_LAST_CMD" == "clear" || "$ZI_ACTIVE" -eq 0 || "$ZI_LAST_CMD" == zi* ]]; then
     return
   fi
 
-  local output=$(jq -Rs . < "$ZI_CURR_OUT")
+  local output=$(__zi_strip_ansi < "$ZI_CURR_OUT" | jq -Rs .)
 
   if [[ "$exit_code" -eq 0 ]]; then
     output=""
@@ -87,6 +95,3 @@ zi() {
     command zi "$@"
   fi
 }
-
-autoload -Uz add-zsh-hook 
-add-zsh-hook precmd __zi_init

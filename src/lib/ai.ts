@@ -1,6 +1,8 @@
 import { createGateway, streamText } from "ai";
 import { systemPrompt } from "../utils/system";
-import { errorAndExit } from "../utils/console";
+import { errorAndExit, error } from "../utils/console";
+import writeError from "../utils/writeError";
+import { COLORS } from "../utils/consts";
 
 type AiResponseProps = {
   prompt: string;
@@ -8,6 +10,7 @@ type AiResponseProps = {
   apiKey: string;
   history?: any[];
   onStart?: () => void;
+  sessionId: string;
 };
 
 export const generateAiResponse = async ({
@@ -15,7 +18,8 @@ export const generateAiResponse = async ({
   model = "openai/gpt-4.1-mini",
   apiKey,
   history,
-  onStart
+  onStart,
+  sessionId
 }: AiResponseProps) => {
   try {
     if (
@@ -49,11 +53,15 @@ export const generateAiResponse = async ({
       prompt,
       system: systemPrompt,
       temperature: 0.7,
-      onError: (error) => {
+      onError: (err) => {
         onStart?.();
         console.log("\n");
-        console.error(error);
-        errorAndExit("AI streaming error");
+        error("Something went wrong. Please try again.");
+        const errorLogFile = writeError(err, sessionId);
+        console.log(
+          `${COLORS.base}Complete error log: ${errorLogFile}${COLORS.reset}`
+        );
+        process.exit(0);
       },
       onChunk: ({ chunk }) => {
         if (chunk.type === "text-delta") {
@@ -65,10 +73,14 @@ export const generateAiResponse = async ({
         }
       }
     });
-    await res.text;
-  } catch (error) {
+    return await res.text;
+  } catch (err) {
     onStart?.();
-    console.error("AI streaming error:", error);
-    errorAndExit("Internal server error");
+    error("Something went wrong. Please try again.");
+    const errorLogFile = writeError(err, sessionId);
+    console.log(
+      `${COLORS.base}Complete error log: ${errorLogFile}${COLORS.reset}`
+    );
+    process.exit(0);
   }
 };
